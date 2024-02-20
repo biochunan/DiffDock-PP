@@ -7,7 +7,6 @@
 #   GPU: `NVIDIA Tesla M60`
 #   CUDA driver: `510.47.03`
 #   CUDA: `11.6`
-CUDAVersion='11.6'
 
 # init conda
 conda init zsh
@@ -29,13 +28,13 @@ if [ -f "${envname}-environment.yaml" ]; then
     conda env update --file "${envname}-environment.yaml" --name $envname
 else
     # install pytorch 2.1.1
-    conda install -y pytorch torchvision torchaudio pytorch-cuda=${CUDAVersion} -c pytorch==2.1.1 -c nvidia
+    conda install -y pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch==2.1.1 -c nvidia
 
     # install torch_geometric
     pip install torch_geometric
     # Optional dependencies:
     pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv \
-        -f https://data.pyg.org/whl/torch-2.1.0+cu${CUDAVersion}.html
+        -f https://data.pyg.org/whl/torch-2.1.1+cu121.html
 
     # extra pakcages
     conda install -y -c conda-forge openmm pdbfixer
