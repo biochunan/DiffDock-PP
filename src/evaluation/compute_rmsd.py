@@ -75,7 +75,7 @@ class RMSDComputer():
         self.complex_rmsd_list = []
         self.ligand_rmsd_list = []
         self.interface_rmsd_list = []
-    
+
     def update_all_rmsd(self, ligand_coors_pred, ligand_coors_true, receptor_coors):
         complex_rmsd = self.update_complex_rmsd(ligand_coors_pred, ligand_coors_true, receptor_coors)
         ligand_rmsd = self.update_ligand_rmsd(ligand_coors_pred, ligand_coors_true)
@@ -97,17 +97,17 @@ class RMSDComputer():
     def update_ligand_rmsd(self, ligand_coors_pred, ligand_coors_true):
         ligand_rmsd = compute_rmsd(ligand_coors_pred, ligand_coors_true)
         self.ligand_rmsd_list.append(ligand_rmsd)
-        
+
         return ligand_rmsd
 
 
     def update_interface_rmsd(self, ligand_coors_pred, ligand_coors_true, receptor_coors):
         ligand_receptor_distance = spa.distance.cdist(ligand_coors_true, receptor_coors)
         positive_tuple = np.where(ligand_receptor_distance < 8.)
-        
+
         active_ligand = positive_tuple[0]
         active_receptor = positive_tuple[1]
-        
+
         ligand_coors_pred = ligand_coors_pred[active_ligand, :]
         ligand_coors_true = ligand_coors_true[active_ligand, :]
         receptor_coors = receptor_coors[active_receptor, :]
@@ -123,7 +123,7 @@ class RMSDComputer():
 
         return interface_rmsd
 
-    
+
     def summarize(self, verbose=True):
         ligand_rmsd_summarized = get_rmsd_summary(self.ligand_rmsd_list) if self.ligand_rmsd_list else None
         complex_rmsd_summarized = get_rmsd_summary(self.complex_rmsd_list)

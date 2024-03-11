@@ -133,7 +133,7 @@ class BindingDataset(Dataset):
             self.data = data
         else:
             self.data = list(data.values())
-            
+
         self.length = len(self.data)
 
     def len(self):
@@ -222,12 +222,12 @@ class RandomizedConfidenceDataset(Dataset):
         center = torch.mean(original_pos, dim=0, keepdim=True)
         # one way to generate random rotation matrix
         # random_rotation = torch.from_numpy(R.random().as_matrix())
-        
+
         # Another way
         rot_update = sample_vec(eps=rot_s_max)# * rot_s_max
         rot_update = torch.from_numpy(rot_update).float()
         random_rotation = axis_angle_to_matrix(rot_update.squeeze())
-        
+
         # yet another way
         #x = np.random.randn(3)
         #x /= np.linalg.norm(x)

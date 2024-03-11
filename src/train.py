@@ -105,7 +105,7 @@ def train(train_loader, val_loader, model,
             grad_mean = torch.tensor(grads).mean()
             if writer is not None:
                 writer.add_scalar("gradient", grad_mean, num_batches)
-            nn.utils.clip_grad_norm_(model.parameters(), 1) # TODO (AK): consider enabling this 
+            nn.utils.clip_grad_norm_(model.parameters(), 1) # TODO (AK): consider enabling this
             optimizer.step()
 
             # write to tensorboard
@@ -126,7 +126,7 @@ def train(train_loader, val_loader, model,
             #    break
 
         printt(f'\nEncountered {num_oom_errors} Out-of-memory errors during last epoch.')
-        
+
         # evaluate (end of epoch)
         avg_train_loss, avg_train_score = train_epoch_end(num_batches,
                 train_loader, model,

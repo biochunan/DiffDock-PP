@@ -141,7 +141,7 @@ class CondfidenceBindingDiskLoader(Dataset):
 
         if self.shuffle:
             random.shuffle(self.existing_batch_dirs)
-        
+
         # If you are not shuffling, you can still use the last batch, just put it at the end
         # Or if you explicitly specify it
         if not shuffle or not drop_last_batch_when_shuffling:

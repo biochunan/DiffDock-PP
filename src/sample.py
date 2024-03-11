@@ -275,7 +275,7 @@ def randomize_position(data_list, args):
         # print(complex_graph["ligand"])
         # print(complex_graph["ligand"].pos)
         # if type(complex_graph) == tuple: # TODO: remove
-        #     complex_graph=complex_graph[0] 
+        #     complex_graph=complex_graph[0]
 
         pos = complex_graph["ligand"].pos
         center = torch.mean(pos, dim=0, keepdim=True)
