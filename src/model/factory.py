@@ -19,7 +19,7 @@ def load_model(args, model_params, fold, load_best=True, confidence_mode = False
         :load_best: if True, load best model in terms of performance on val set, else load last model
     """
     # load model args
-
+    
     with open(os.path.join(args.filtering_model_path if confidence_mode else args.score_model_path,"../args.yaml")) as f:
         model_args = yaml.safe_load(f)
     model_args = Dict2Class(model_args)
@@ -57,9 +57,9 @@ def load_model(args, model_params, fold, load_best=True, confidence_mode = False
             checkpoint = get_model_path(fold_dir)
         else:
             checkpoint = os.path.join(fold_dir, "model_last.pth")
-
+    
     print("checkpoint",checkpoint)
-
+      
     if checkpoint is not None:
         # extract current model
         state_dict = model.state_dict()
@@ -119,7 +119,7 @@ def load_model_for_training(args, model_params, fold, load_best=True, confidence
             checkpoint = select_model(fold_dir, confidence_mode=confidence_mode)
         else:
             checkpoint = os.path.join(fold_dir, "model_last.pth")
-
+            
         if checkpoint is not None:
             # extract current model
             state_dict = model.state_dict()

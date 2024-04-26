@@ -61,7 +61,7 @@ def train_epoch(args, model, loader, optimizer, writer, num_batches):
                 #accuracy = torch.mean((labels == (pred > 0).int()).float())
                 #print(f'train_accuracy: {accuracy}')
             loss = confidence_loss
-
+            
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1)
             optimizer.step()
@@ -89,7 +89,7 @@ def train_epoch(args, model, loader, optimizer, writer, num_batches):
             log_key = f"train_loss_per_batch"
             if writer is not None:
                 writer.add_scalar(log_key, loss, num_batches)
-
+        
     all_labels = torch.cat(all_labels)
     print(f'percentage of positives in train: {all_labels.mean()}')
     if writer:
@@ -112,7 +112,7 @@ def test_epoch(args, model, loader, writer):
     model.eval()
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
+    
     all_labels = []
     all_pred = []
     all_loss = []
@@ -126,7 +126,7 @@ def test_epoch(args, model, loader, writer):
         try:
             with torch.no_grad():
                 pred = model(data)
-
+            
             if args.rmsd_prediction:
                 labels = rmsd.to(device)
                 confidence_loss = F.mse_loss(pred, labels)

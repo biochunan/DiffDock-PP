@@ -44,9 +44,9 @@ def main(args=None):
         if args.logger == "tensorboard":
             writer = TensorboardLogger(log_dir=log_dir)
         elif args.logger == "wandb":
-            writer = WandbLogger(project=args.project,
-                                entity=args.entity,
-                                name=args.run_name,
+            writer = WandbLogger(project=args.project, 
+                                entity=args.entity, 
+                                name=args.run_name, 
                                 group=args.group,
                                 config=args)
         else:
@@ -95,9 +95,9 @@ def main(args=None):
                 if args.logger == "tensorboard":
                     writer = TensorboardLogger(log_dir=log_dir)
                 elif args.logger == "wandb":
-                    writer = WandbLogger(project=args.project,
-                                        entity=args.entity,
-                                        name=args.run_name,
+                    writer = WandbLogger(project=args.project, 
+                                        entity=args.entity, 
+                                        name=args.run_name, 
                                         group=args.group,
                                         config=args)
                 else:
@@ -122,7 +122,7 @@ def main(args=None):
             #### run training loop
             printt(f'len(train_loader): {len(train_loader)}')
             printt(f'len(val_loader): {len(val_loader)}')
-
+            
             best_score, best_epoch, best_path = train(
                     train_loader, val_loader,
                     model, writer, fold_dir, args)
@@ -169,7 +169,7 @@ def main(args=None):
                 continue
             fold = int(fold_dir[5:])
             # load and convert data to DataLoaders
-
+            
             printt("finished creating data splits")
             # get model and load checkpoint, if relevant
             model = load_model_for_training(args, data_params, fold,confidence_mode=True)
@@ -177,14 +177,14 @@ def main(args=None):
             printt("finished loading model")
 
             # run reverse diffusion process
-
+            
 
             # test fold
             _,test_score = test_epoch(args, model, val_loader, writer=None) # TODO change to test_loader
             test_score["fold"] = fold
             # add val for hyperparameter search
             _,val_score = test_epoch(args, model, val_loader , writer=None)
-
+            
             for key, val in val_score.items():
                 test_score[f"val_{key}"] = val
 
@@ -261,6 +261,6 @@ def main(args=None):
     #if args.test:
     #    test(args, model, val_loader, run_dir, multiplicity=args.multiplicity_test)
 
-
+    
 if __name__ == '__main__':
     main()

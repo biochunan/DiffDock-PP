@@ -1,0 +1,59 @@
+FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04
+
+# ------------------------------------------------------------------------------
+# Install zsh and oh-my-zsh
+# ------------------------------------------------------------------------------
+RUN apt-get update && apt-get install -yq zsh sudo curl wget jq vim git-core gnupg locales && apt-get clean
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || true
+RUN chsh -s /bin/zsh
+
+# ------------------------------------------------------------------------------
+# Install miniconda
+# ------------------------------------------------------------------------------
+# credits: @pangyuteng
+# refer to: https://gist.github.com/pangyuteng/f5b00fe63ac31a27be00c56996197597
+# Use the above args during building https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
+# Choices
+# PLATFORM: Linux, MacOSX, or Windows
+# OS_TYPE : x86_64, arm64, ppc64le, s390x, or x86, armv7l
+ARG CONDA_VER=latest
+ARG PLATFORM=Linux
+ARG OS_TYPE=x86_64
+# Install miniconda to /miniconda
+RUN curl -LO "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VER}-Linux-${OS_TYPE}.sh"
+RUN bash Miniconda3-${CONDA_VER}-Linux-${OS_TYPE}.sh -p /miniconda -b
+RUN rm Miniconda3-${CONDA_VER}-Linux-${OS_TYPE}.sh
+ENV PATH=/miniconda/bin:${PATH}
+RUN conda update -y conda
+
+# Cleanup
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN conda clean -a -y && pip cache purge
+
+# ------------------------------------------------------------------------------
+# COPY files here
+# ------------------------------------------------------------------------------
+COPY ./checkpoints     /diffdock-pp/checkpoints
+COPY ./entrypoint      /diffdock-pp/entrypoint
+COPY ./scripts         /diffdock-pp/scripts
+COPY ./src             /diffdock-pp/src
+COPY ./run_one_abdb.py /diffdock-pp/run_one_abdb.py
+COPY ./README.md       /diffdock-pp/README.md
+COPY ./environment.yml /diffdock-pp/environment.yml
+COPY ./.*.npy          /diffdock-pp/
+COPY ./config/single_pair_inference.yaml /diffdock-pp/config/single_pair_inference.yaml
+
+# ------------------------------------------------------------------------------
+# Create environment with conda
+# ------------------------------------------------------------------------------
+WORKDIR /diffdock-pp/entrypoint
+RUN zsh create-env.sh
+
+# ------------------------------------------------------------------------------
+# End of base image
+# ------------------------------------------------------------------------------
+RUN mkdir -p /output /input \
+    && sudo chmod -R 777 /output /input
+WORKDIR /diffdock-pp
+ENTRYPOINT [ "zsh", "entrypoint/entrypoint.sh" ]
+CMD [ "-h" ]

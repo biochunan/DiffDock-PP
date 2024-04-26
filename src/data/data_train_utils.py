@@ -157,7 +157,7 @@ class Loader:
 
     def extract_coords(self, all_res, all_atom, all_pos):
         """
-            Extract coordinates of CA, N, and C atoms that are needed
+            Extract coordinates of CA, N, and C atoms that are needed 
             to compute orientation features, as proposed in EquiDock
 
             @return c_alpha_coords, n_coords, c_coords (all torch.Tensor)
@@ -176,7 +176,7 @@ class Loader:
         c_alpha_coords = torch.stack(c_alpha_coords)
         n_coords = torch.stack(n_coords)
         c_coords = torch.stack(c_coords)
-
+        
         assert c_alpha_coords.shape == n_coords.shape == c_coords.shape
 
         return c_alpha_coords, n_coords, c_coords
@@ -186,7 +186,7 @@ class Loader:
             Extract 3D coordinates and n_i, u_i, v_i vectors of representative residues
         """
         num_residues = c_alpha_coords.shape[0]
-
+        
         n_i_list = []
         u_i_list = []
         v_i_list = []
@@ -206,9 +206,9 @@ class Loader:
         n_i_feat = torch.stack(n_i_list)
         u_i_feat = torch.stack(u_i_list)
         v_i_feat = torch.stack(v_i_list)
-
+        
         assert n_i_feat.shape == u_i_feat.shape == v_i_feat.shape
-
+        
         return n_i_feat, u_i_feat, v_i_feat
 
     def process_data(self, data, args):

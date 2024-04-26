@@ -46,9 +46,9 @@ def main(args=None):
         if args.logger == "tensorboard":
             writer = TensorboardLogger(log_dir=log_dir)
         elif args.logger == "wandb":
-            writer = WandbLogger(project=args.project,
-                                entity=args.entity,
-                                name=args.run_name,
+            writer = WandbLogger(project=args.project, 
+                                entity=args.entity, 
+                                name=args.run_name, 
                                 group=args.group,
                                 config=args)
         else:
@@ -89,9 +89,9 @@ def main(args=None):
                 if args.logger == "tensorboard":
                     writer = TensorboardLogger(log_dir=log_dir)
                 elif args.logger == "wandb":
-                    writer = WandbLogger(project=args.project,
-                                        entity=args.entity,
-                                        name=args.run_name,
+                    writer = WandbLogger(project=args.project, 
+                                        entity=args.entity, 
+                                        name=args.run_name, 
                                         group=args.group,
                                         config=args)
                 else:
@@ -131,7 +131,7 @@ def main(args=None):
                     print('val_data')
                     print(val_data["name"])
             #return
-
+            
             best_score, best_epoch, best_path = train(
                     train_loader, val_loader,
                     model, writer, fold_dir, args, loaders_for_reverse_diffusion)
@@ -162,7 +162,7 @@ def main(args=None):
             break # run single fold
             # end of fold ========
 
-        printt(f"{args.num_folds} folds average")
+        printt(f"{args.num_folds} folds average") 
         print_res(test_scores)
         log(test_scores, args.log_file)
         # end of all folds ========

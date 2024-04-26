@@ -1,3 +1,7 @@
+REPO_BASE=$(dirname $(dirname $(realpath $0)))  # path to DiffDock-PP
+
+CONFIG="${REPO_BASE}/config/${NAME}.yaml"
+
 NUM_FOLDS=1  # number of seeds to try, default 5
 SEED=0  # initial seed
 CUDA=0  # will use GPUs from CUDA to CUDA + NUM_GPU - 1
@@ -6,12 +10,15 @@ BATCH_SIZE=1  # split across all GPUs
 NUM_SAMPLES=40
 
 NAME="single_pair_inference"  # change to name of config file
-RUN_NAME="run_on_pdb_pairs"
-CONFIG="config/${NAME}.yaml"
+RUN_NAME=${1:-"single_pair_inference"}  # change to name of run
 
-SAVE_PATH="ckpts/${RUN_NAME}"
+OUTDIR="out/${RUN_NAME}"
+mkdir -p $OUTDIR
+
+SAVE_PATH="$OUTDIR/ckpts/${RUN_NAME}"
 VISUALIZATION_PATH="visualization/${RUN_NAME}"
-STORAGE_PATH="storage/${RUN_NAME}.pkl"
+STORAGE_PATH="/workspaces/DiffDock-PP/out/storage/${RUN_NAME}.pkl"
+mkdir -p $(dirname $STORAGE_PATH)
 
 FILTERING_PATH="checkpoints/confidence_model_dips/fold_0/"
 SCORE_PATH="checkpoints/large_model_dips/fold_0/"
