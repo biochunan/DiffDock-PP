@@ -1,12 +1,13 @@
-# This script should contain run-specific information
-# like GPU id, batch size, etc.
-# Everything else should be specified in config.yaml
+#!/bin/zsh
 
 NUM_FOLDS=1  # number of seeds to try, default 5
 SEED=0  # initial seed
 CUDA=0  # will use GPUs from CUDA to CUDA + NUM_GPU - 1
 NUM_GPU=1
 BATCH_SIZE=2  # split across all GPUs
+
+WD=$(dirname $(dirname $(realpath $0)))  # diffdock-pp
+pushd $WD
 
 NAME="dips_esm"  # change to name of config file
 RUN_NAME="large_model_dips" # should uniauely describe the current experiment
@@ -17,7 +18,7 @@ VISUALIZATION_PATH="visualization/${RUN_NAME}"
 
 echo SAVE_PATH: $SAVE_PATH
 
-python src/main.py \
+python $WD/src/main.py \
     --mode "train" \
     --config_file $CONFIG \
     --run_name $RUN_NAME \
